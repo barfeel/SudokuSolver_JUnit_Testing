@@ -1,0 +1,263 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GameTestingClass</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Test</a>
+</div>
+
+<h1>Coverage Summary for Class: GameTestingClass (Test)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameTestingClass</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (42/49)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Test;
+&nbsp;
+&nbsp;import nl.elridge.sudoku.controller.ButtonController;
+&nbsp;import nl.elridge.sudoku.model.Game;
+&nbsp;import org.junit.jupiter.api.Assertions;
+&nbsp;import org.junit.jupiter.api.BeforeEach;
+&nbsp;import org.junit.jupiter.api.Test;
+&nbsp;import org.junit.jupiter.params.ParameterizedTest;
+&nbsp;import org.junit.jupiter.params.provider.ValueSource;
+&nbsp;import org.mockito.InjectMocks;
+&nbsp;import org.mockito.Mock;
+&nbsp;import org.mockito.MockitoAnnotations;
+&nbsp;
+&nbsp;import java.awt.event.ActionEvent;
+&nbsp;import java.util.Arrays;
+&nbsp;
+&nbsp;import static org.mockito.Mockito.*;
+&nbsp;
+<b class="fc">&nbsp;public class GameTestingClass extends BaseTest {</b>
+&nbsp;
+&nbsp;
+&nbsp;    @InjectMocks
+&nbsp;    private ButtonController buttonController;
+&nbsp;    @Mock
+&nbsp;    private Game game;
+&nbsp;
+<b class="fc">&nbsp;    private static Game games = new Game();</b>
+&nbsp;    @BeforeEach
+&nbsp;    public void startSudoku(){
+<b class="fc">&nbsp;        games.newGame();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @BeforeEach
+&nbsp;    public void initialize(){
+<b class="fc">&nbsp;        MockitoAnnotations.openMocks(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void newGameTest(){
+<b class="fc">&nbsp;       ActionEvent event = mock(ActionEvent.class);</b>
+<b class="fc">&nbsp;        buttonController = new ButtonController(game);</b>
+<b class="fc">&nbsp;        when(event.getActionCommand()).thenReturn(&quot;New&quot;);</b>
+<b class="fc">&nbsp;        doNothing().when(game).newGame();</b>
+<b class="fc">&nbsp;        buttonController.actionPerformed(event);</b>
+<b class="fc">&nbsp;        verify(game, times(1)).newGame();</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    }
+&nbsp;    @Test
+&nbsp;    public void testCheckGame(){
+<b class="fc">&nbsp;        ActionEvent actionEvent = mock(ActionEvent.class);</b>
+<b class="fc">&nbsp;        buttonController = new ButtonController(game);</b>
+<b class="fc">&nbsp;        when(actionEvent.getActionCommand()).thenReturn(&quot;Check&quot;);</b>
+<b class="fc">&nbsp;        doNothing().when(game).checkGame();</b>
+&nbsp;
+<b class="fc">&nbsp;        buttonController.actionPerformed(actionEvent);</b>
+<b class="fc">&nbsp;        verify(game, times(1)).checkGame();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void isTestCheckValidForValidIndexesTest(){
+<b class="fc">&nbsp;        boolean[][] check = {{true, false}, {false,true}};</b>
+<b class="fc">&nbsp;        Assertions.assertTrue( game.isCheckValid(0,0));</b>
+<b class="nc">&nbsp;        Assertions.assertFalse(game.isCheckValid(1,0));</b>
+<b class="nc">&nbsp;        Assertions.assertFalse(game.isCheckValid(0,1));</b>
+<b class="nc">&nbsp;        Assertions.assertTrue(game.isCheckValid(1,1));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void setHelpOnTest(){
+<b class="fc">&nbsp;        games.setHelp(true);</b>
+<b class="fc">&nbsp;        Assertions.assertTrue(games.isHelp());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void setHelpOff(){
+<b class="fc">&nbsp;        game.setHelp(false);</b>
+<b class="fc">&nbsp;        Assertions.assertFalse(game.isHelp(), &quot;Help is not checked&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void generateNewArrayAfterNewGame() {
+<b class="fc">&nbsp;        int[][] tmp = copyArr(BaseTest.generateGameArray(games));</b>
+<b class="fc">&nbsp;        games.newGame();</b>
+<b class="fc">&nbsp;        Assertions.assertTrue(Arrays.deepEquals(generateGameArray(games), tmp));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void writeNumberInSelectedField(){
+<b class="fc">&nbsp;        int x = 1;</b>
+<b class="fc">&nbsp;        int y = 2;</b>
+<b class="fc">&nbsp;        int z = 3;</b>
+<b class="fc">&nbsp;        games.setSelectedNumber(z);</b>
+<b class="fc">&nbsp;        games.setNumber(x , y , games.getSelectedNumber());</b>
+<b class="fc">&nbsp;        Assertions.assertEquals(games.getSelectedNumber(),games.getNumber(x,y), &quot;Number is not there&quot;);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;    @ParameterizedTest
+&nbsp;    @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9 })
+&nbsp;    public void isSelectedNumberCandidateValidTrue(int n) {
+&nbsp;
+<b class="fc">&nbsp;        game.checkGame();</b>
+<b class="fc">&nbsp;        game.setSelectedNumber(n);</b>
+<b class="fc">&nbsp;        for (int y = 0; y &lt; 9; y++) {</b>
+<b class="fc">&nbsp;            for (int x = 0; x &lt; 9; x++) {</b>
+<b class="fc">&nbsp;                if (game.isSelectedNumberCandidate(x, y) &amp;&amp; game.isCheckValid(x, y)) {</b>
+<b class="nc">&nbsp;                    game.setNumber(x, y, game.getSelectedNumber());</b>
+<b class="nc">&nbsp;                    Assertions.assertTrue(game.isCheckValid(x, y));</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @ParameterizedTest
+&nbsp;    @ValueSource(ints ={10 , 22 , 33 }  )
+&nbsp;    public void isSelectedNumberCandidateValidFalse(int n) {
+<b class="fc">&nbsp;        game.checkGame();</b>
+<b class="fc">&nbsp;        game.setSelectedNumber(n);</b>
+<b class="fc">&nbsp;        for (int y = 0; y &lt; 9; y++) {</b>
+<b class="fc">&nbsp;            for (int x = 0; x &lt; 9; x++) {</b>
+<b class="fc">&nbsp;                if (game.isSelectedNumberCandidate(x, y) &amp;&amp; !game.isCheckValid(x, y)) {</b>
+<b class="nc">&nbsp;                    game.setNumber(x, y, game.getSelectedNumber());</b>
+<b class="nc">&nbsp;                    Assertions.assertFalse(game.isCheckValid(x, y));</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testisSelectedNumberCandidate_SelectedNumber(){
+<b class="fc">&nbsp;         game.isSelectedNumberCandidate(1,9);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-06 11:50</div>
+</div>
+</body>
+</html>
